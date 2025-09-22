@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -110,7 +111,7 @@ public class NumberTriangle {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
 
-        // TODO define any variables that you want to use to store things
+        ArrayList<NumberTriangle> prev_row = new ArrayList<>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
@@ -121,8 +122,26 @@ public class NumberTriangle {
 
             // remove when done; this line is included so running starter code prints the contents of the file
             System.out.println(line);
+            String[] parts = line.trim().split("\\s+");
+            ArrayList<NumberTriangle> row = new ArrayList<>();
 
-            // TODO process the line
+            for (String part : parts) {
+                int value = Integer.parseInt(part);
+                NumberTriangle node = new NumberTriangle(value);
+                row.add(node);
+            }
+
+            if (!prev_row.isEmpty()) {
+                for (int i = 0; i < prev_row.size(); i++) {
+                    NumberTriangle parent = prev_row.get(i);
+                    parent.setLeft(row.get(i));
+                    parent.setRight(row.get(i + 1));
+                }
+            } else{
+                top = row.get(0);
+            }
+
+            prev_row = row;
 
             //read the next line
             line = br.readLine();
